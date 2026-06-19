@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) 2026 Hunter Cook (jusdisgi)
+ * SPDX-License-Identifier: MIT
+ *
+ * Right half = split PERIPHERAL. Its keys are shifted into columns 18..35 by
+ * col-offset. The right PCB uses the SAME pin->key wiring as the left (mirrored
+ * geometry, identical net/pin assignments), so the pins repeat; only the order
+ * is reversed per row so column j lands at the mirrored visual position.
+ *
+ * !! PLACEHOLDER PINS !! Same caveat as stactyl_left.overlay — these Dn pins are
+ * inherited from xiphos and must be re-derived from stactyl's PCB once routed.
+ */
+
+#include "stactyl.dtsi"
+
+&default_transform {
+    col-offset = <18>;
+};
+
+&kscan0 {
+    input-gpios
+        = <&pro_micro 21 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  0 -> 18  inner  top      (D21)
+        , <&pro_micro 20 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  1 -> 19  index  top      (D20)
+        , <&pro_micro 19 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  2 -> 20  middle top      (D19)
+        , <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  3 -> 21  ring   top      (D18)
+        , <&pro_micro  7 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  4 -> 22  pinky  top      (D7)
+        , <&pro_micro  1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  5 -> 23  inner  home     (D1)
+        , <&pro_micro 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  6 -> 24  index  home     (D10)
+        , <&pro_micro 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  7 -> 25  middle home     (D16)
+        , <&pro_micro 14 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  8 -> 26  ring   home     (D14)
+        , <&pro_micro 15 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   //  9 -> 27  pinky  home     (D15)
+        , <&pro_micro  6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // 10 -> 28  inner  bottom   (D6)
+        , <&pro_micro  5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // 11 -> 29  index  bottom   (D5)
+        , <&pro_micro  4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // 12 -> 30  middle bottom   (D4)
+        , <&pro_micro  3 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // 13 -> 31  ring   bottom   (D3)
+        , <&pro_micro  2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // 14 -> 32  pinky  bottom   (D2)
+        , <&pro_micro  0 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // 15 -> 33  pinky  SHIFT    (D0)
+        , <&pro_micro  9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // 16 -> 34  thumb  reachy   (D9)
+        , <&pro_micro  8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // 17 -> 35  thumb  tucky    (D8)
+        ;
+};

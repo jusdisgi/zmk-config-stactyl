@@ -1,0 +1,11 @@
+file_format: "1"
+id: stactyl
+name: stactyl
+type: shield
+url: https://github.com/jusdisgi/stactyl
+requires: [pro_micro]
+features:
+  - keys
+siblings:
+  - stactyl_left
+  - stactyl_right

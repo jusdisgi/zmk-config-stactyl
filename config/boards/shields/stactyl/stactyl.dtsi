@@ -1,0 +1,55 @@
+/*
+ * Copyright (c) 2026 Hunter Cook (jusdisgi)
+ * SPDX-License-Identifier: MIT
+ *
+ * stactyl: 36-key direct-wired split (nice!nano per half).
+ * 18 keys/half = 3x5 finger well + 1 outboard pinky + 2 thumbs. Electrically
+ * identical to xiphos ("cradio + one outboard pinky") — same direct-pin count,
+ * so the shield is cloned from xiphos. The physical difference (a true 3D dactyl
+ * keywell vs xiphos's flat splay) does not change the logical 36-key transform.
+ * Each switch is wired from its own pro_micro pin to GND -> kscan-gpio-direct,
+ * active-low with internal pull-up.
+ *
+ * Pin assignments will come from stactyl's ergogen config.yaml (the PCB source of
+ * truth) once routed; the overlays currently hold PLACEHOLDER pins inherited from
+ * xiphos (see the warning in stactyl_left.overlay).
+ */
+
+#include <dt-bindings/zmk/matrix_transform.h>
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+        zmk,matrix_transform = &default_transform;
+    };
+
+    /*
+     * Direct kscan reports every pin as (row 0, column i), so the transform is
+     * one row, 36 columns. Left half occupies columns 0..17; the right half is
+     * pushed to 18..35 via `col-offset = <18>` in stactyl_right.overlay.
+     *
+     * Keymap position order = order of the entries below (row by row):
+     *
+     *  0  1  2  3  4        5  6  7  8  9     <- top    (pinky..inner | inner..pinky)
+     * 10 11 12 13 14       15 16 17 18 19     <- home
+     * 20 [21 22 23 24 25   26 27 28 29 30] 31 <- bottom, 20/31 = outboard pinky SHIFT
+     *          32 33       34 35              <- thumbs (tucky/reachy | reachy/tucky)
+     */
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <36>;
+        rows = <1>;
+        map = <
+            RC(0,0)  RC(0,1)  RC(0,2)  RC(0,3)  RC(0,4)     RC(0,18) RC(0,19) RC(0,20) RC(0,21) RC(0,22)
+            RC(0,5)  RC(0,6)  RC(0,7)  RC(0,8)  RC(0,9)     RC(0,23) RC(0,24) RC(0,25) RC(0,26) RC(0,27)
+   RC(0,15) RC(0,10) RC(0,11) RC(0,12) RC(0,13) RC(0,14)    RC(0,28) RC(0,29) RC(0,30) RC(0,31) RC(0,32) RC(0,33)
+                              RC(0,16) RC(0,17)             RC(0,34) RC(0,35)
+        >;
+    };
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-direct";
+        wakeup-source;
+        /* input-gpios filled in per-half by stactyl_left.overlay / stactyl_right.overlay */
+    };
+};

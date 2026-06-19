@@ -1,0 +1,8 @@
+# Copyright (c) 2026 Hunter Cook (jusdisgi)
+# SPDX-License-Identifier: MIT
+
+config SHIELD_STACTYL_LEFT
+    def_bool $(shields_list_contains,stactyl_left)
+
+config SHIELD_STACTYL_RIGHT
+    def_bool $(shields_list_contains,stactyl_right)

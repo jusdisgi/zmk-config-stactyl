@@ -1,0 +1,11 @@
+# What GitHub Actions builds. Each entry produces one .uf2 in the artifacts zip.
+# Board target uses Zephyr hardware-model-v2 naming: `nice_nano//zmk`
+# (the post-migration ZMK no longer has a board named `nice_nano_v2`).
+include:
+  - board: nice_nano//zmk
+    shield: stactyl_left
+  - board: nice_nano//zmk
+    shield: stactyl_right
+  # Flash this to a half to wipe stored Bluetooth bonds when re-pairing halves.
+  - board: nice_nano//zmk
+    shield: settings_reset

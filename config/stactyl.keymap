@@ -1,0 +1,157 @@
+// Copyright (c) 2026 Hunter Cook (jusdisgi)
+// SPDX-License-Identifier: MIT
+//
+// stactyl default keymap. Carried over from xiphos (same 36-key direct-pin
+// layout), which itself ports the alpha layout + layer scheme from
+// zmk-config-sweep-pro. The two outboard pinky keys are dedicated SHIFTs on the
+// base layer (transparent elsewhere). Trackpad / encoder / pointing behaviors
+// from sweep-pro are intentionally dropped — stactyl has none.
+//
+// Physical layout differs from xiphos (3D dactyl keywell, not a flat splay) but
+// the logical key-position numbering below is identical, so the keymap ports 1:1.
+// The 2-key thumb cluster position/angle is still a hardware TODO; if it changes,
+// the thumb bindings here may want revisiting.
+//
+// Key position map (see stactyl.dtsi). Use these numbers for combos:
+//
+//   0  1  2  3  4        5  6  7  8  9
+//  10 11 12 13 14       15 16 17 18 19
+//  20 21 22 23 24 25    26 27 28 29 30 31      (20 / 31 = outboard pinky SHIFT)
+//           32 33       34 35                  (thumbs)
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/outputs.h>
+
+#define ABC  0
+#define NUM  1
+#define SYM  2
+#define NAV  3
+#define FUN  4
+#define UTIL 5
+
+// Home-row mods
+#define HRML(k1,k2,k3,k4) &ht LGUI k1  &ht LALT k2  &ht LCTRL k3  &ht LSHFT k4
+#define HRMR(k1,k2,k3,k4) &ht RSHFT k1 &ht RCTRL k2 &ht RALT k3   &ht RGUI k4
+
+/ {
+    behaviors {
+        ht: hold_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <180>;
+            quick-tap-ms = <100>;
+            require-prior-idle-ms = <100>;
+            bindings = <&kp>, <&kp>;
+        };
+        tdto0: tap_dance_to_layer_0 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&none>, <&to ABC>;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <NAV FUN>;
+            then-layer = <UTIL>;
+        };
+    };
+
+    combos {
+        compatible = "zmk,combos";
+
+        combo_esc {        // Q + W
+            timeout-ms = <30>;
+            key-positions = <0 1>;
+            bindings = <&kp ESC>;
+        };
+        combo_caps_word {  // F + P
+            timeout-ms = <30>;
+            key-positions = <2 3>;
+            bindings = <&caps_word>;
+        };
+        combo_del {        // N + E (right home)
+            timeout-ms = <30>;
+            key-positions = <16 17>;
+            bindings = <&kp DEL>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            display-name = "ABC";
+            bindings = <
+//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+//│  Q       │  W       │  F       │  P (NAV)  │  B       │   │  J       │  L       │  U       │  Y       │  ' "     │
+    &kp Q      &kp W      &kp F      &lt NAV P  &kp B           &kp J      &kp L      &kp U      &kp Y      &kp SQT
+//├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+//│  A/GUI   │  R/ALT   │  S/CTRL  │  T/SHFT  │  G       │   │  M       │  N/SHFT  │  E/CTRL  │  I/ALT   │  O/GUI   │
+    HRML(A,        R,         S,         T)     &kp G           &kp M      HRMR(N,        E,         I,         O)
+//┌────────┬─┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼─┬────────┐
+//│ SHIFT  │ │  Z (FUN) │  X       │  C (SYM) │  D (NUM) │  V       │   │  K       │  H       │  , <     │  . >     │  / ?     │ │ SHIFT  │
+    &kp LSHFT  &lt FUN Z  &kp X      &lt SYM C  &lt NUM D  &kp V           &kp K      &kp H      &kp COMMA  &kp DOT    &kp FSLH   &kp RSHFT
+//└────────┴─┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┴─┴────────┘
+//                                 │  TAB     │  ENTER   │              │  SPACE   │  BSPC    │
+                                    &kp TAB    &kp ENTER       &kp SPACE  &kp BSPC
+//                                 ╰──────────┴──────────╯              ╰──────────┴──────────╯
+            >;
+        };
+
+        num_layer {
+            display-name = "NUM";
+            bindings = <
+    &kp N1     &kp N2     &kp N3     &kp N4     &kp N5          &kp N6     &kp N7     &kp N8     &kp N9     &kp N0
+    &kp DEL    &kp LGUI   &caps_word &none      &none           &kp FSLH   &kp N4     &kp N5     &kp N6     &kp MINUS
+    &trans     &kp LALT   &kp LCTRL  &kp LSHFT  &none      &none     &kp ASTRK  &kp N1     &kp N2     &kp N3     &kp PLUS   &trans
+                                     &kp ESC    &kp EQUAL       &kp N0     &kp DOT
+            >;
+        };
+
+        sym_layer {
+            display-name = "SYM";
+            bindings = <
+    &none      &none      &none      &none      &none           &kp CARET  &kp MINUS  &kp EQUAL  &kp BSLH   &kp TILDE
+    &none      &none      &none      &none      &none           &kp COLON  &kp LPAR   &kp RPAR   &kp PLUS   &kp SEMI
+    &trans     &none      &none      &none      &none      &none     &kp PIPE   &kp EXCL   &kp AT     &kp HASH   &kp GRAVE  &trans
+                                     &kp LBKT   &kp RBKT        &kp LBRC   &kp RBRC
+            >;
+        };
+
+        nav_layer {
+            display-name = "NAV";
+            bindings = <
+    &none      &none      &kp LSHFT  &none      &none           &kp PG_UP  &kp HOME   &kp UP     &kp END    &kp PG_UP
+    &none      &none      &none      &none      &none           &kp PG_DN  &kp LEFT   &kp DOWN   &kp RIGHT  &kp PG_DN
+    &trans     &mo UTIL   &none      &none      &none      &kp SPACE  &kp RALT   &kp HOME   &kp INS    &kp END    &tdto0     &trans
+                                     &kp LEFT   &kp RIGHT       &kp RSHFT  &kp RCTRL
+            >;
+        };
+
+        fun_layer {
+            display-name = "FUN";
+            bindings = <
+    &kp F1     &kp F2     &kp F3     &lt NAV F4 &kp F5          &kp C_PP   &kp F9     &kp F10    &kp F11    &kp F12
+    &kp LGUI   &kp LALT   &kp LCTRL  &kp LSHFT  &none           &kp C_VOL_UP &kp F5   &kp F6     &kp F7     &kp F8
+    &trans     &none      &kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp LC(V) &kp C_VOL_DN &kp F1  &kp F2     &kp F3     &kp F4     &trans
+                                     &none      &kp ESC         &kp C_MUTE &kp PSCRN
+            >;
+        };
+
+        util_layer {
+            display-name = "UTIL";
+            bindings = <
+    &none      &none      &none      &none      &none           &none      &bt BT_SEL 4 &none    &none      &none
+    &none      &none      &none      &none      &none           &none      &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3
+    &trans     &none      &none      &none      &none      &none     &none      &out OUT_TOG &none    &none      &bt BT_CLR &trans
+                                     &none      &none           &bt BT_PRV &bt BT_NXT
+            >;
+        };
+    };
+};
