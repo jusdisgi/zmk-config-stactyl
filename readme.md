@@ -16,8 +16,8 @@ from a flat board — a true 3D dactyl keywell — doesn't change the logical 36
 > the row-3 matrix cells for the outboard pinky + thumbs) are *tentative*. Once the board is routed,
 > re-derive them from the regular-XIAO footprint `Pn:` assignments in `../stactyl/config.yaml`, update
 > both overlays + the R3 transform map, and confirm `diode-direction` matches the placed diodes.
-> Pin budget: 9 matrix + 1 RGB data + 1 LED-rail enable = 11 (full). The LED enable uses a
-> `zmk,ext-power` node (AO3401A gate) — to be added with the RGB config.
+> Pin budget: 9 matrix (5 cols + 4 rows) of 11, 2 spare. (RGB shelved to a future variant — keys
+> only; see `../stactyl/CLAUDE.md`.)
 
 ## Build & flash
 

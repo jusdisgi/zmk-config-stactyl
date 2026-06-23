@@ -31,13 +31,11 @@ Tier 1, Hunter's own.
   and the exact RC() cells for the outboard pinky + thumbs are tentative. Re-derive from the routed
   board (regular XIAO footprint `Pn:` assignments), update both overlays + the R3 map, and confirm
   `diode-direction` matches how the diodes are placed. **Until then, do not treat them as final.**
-- **Pin budget (regular XIAO, 11 GPIO, exactly full):** 9 matrix + 1 RGB data + **1 LED-rail enable**
-  = 11. The enable GPIO drives a high-side switch (Q1 AO3401A P-FET + Q2 2N7002 driver); **GPIO-high =
-  LEDs on**, so the **`zmk,ext-power`** node uses an active-high control GPIO (ZMK cuts the rail on
-  idle/sleep). Mirror WalkThePlanck.
-- **RGB:** per-key + underglow addressable LEDs in scope — part locked **SK6805-1515 (EC15)**
-  `C2890035`, single-wire WS2812 protocol, so ZMK's standard `ws2812`/`zmk,underglow` driver applies.
-  Add the RGB config + one data pin + the `ext-power` LED-switch node once the chain/topology is settled.
+- **Pin budget (regular XIAO, 11 GPIO):** 9 matrix (5 cols + 4 rows) = **9 of 11, 2 spare.**
+- **No RGB (shelved 2026-06-23).** Per-key + underglow RGB (SK6805-1515 + an `ext-power` LED switch)
+  was designed then shelved to a future variant — see `../stactyl/CLAUDE.md` "Future variant — RGB
+  (shelved)". The active firmware is keys only; no `ws2812`/`zmk,underglow`/`ext-power` here. (If the
+  variant is built, it adds the RGB config + a data pin + an `ext-power` node on a spare GPIO.)
 - Keymap (`config/stactyl.keymap`) is the sweep-pro lineage via xiphos, trackpad/encoder/pointing
   stripped. Two outboard pinky keys = SHIFT on base, `&trans` elsewhere. The 2-key thumb cluster
   geometry is still a hardware TODO; revisit thumb bindings if it changes.
@@ -51,9 +49,9 @@ builds `xiao_ble//zmk` — so this rev supports the XIAO target).
 **Board target = `xiao_ble//zmk`** in `build.yaml` — `xiao_ble` *is* the regular XIAO nRF52840 BLE
 target (the controller we're using). Per workspace convention use the HWMv2 name, never a `_v2` suffix.
 
-**GPIO check (resolved):** regular XIAO has d0–d10 = 11 usable; we need 9 matrix + 1 RGB data + 1
-LED-enable = 11. Fits exactly (TOTEM is a 36-key matrix split on the same target). Re-derive the
-specific `&xiao_d` pins from the routed PCB.
+**GPIO check (resolved):** regular XIAO has d0–d10 = 11 usable; the matrix needs 9 (5 cols + 4 rows),
+so 2 spare. (TOTEM is a 36-key matrix split on the same target.) Re-derive the specific `&xiao_d` pins
+from the routed PCB.
 
 ## git — hands off
 
