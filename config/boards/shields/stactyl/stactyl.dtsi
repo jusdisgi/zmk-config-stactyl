@@ -2,7 +2,7 @@
  * Copyright (c) 2026 Hunter Cook (jusdisgi)
  * SPDX-License-Identifier: MIT
  *
- * stactyl: 36-key MATRIX split, one XIAO nRF52840 Plus per half.
+ * stactyl: 36-key MATRIX split, one regular XIAO nRF52840 BLE per half.
  * 18 keys/half = 3x5 finger well + 1 outboard pinky + 2 thumbs.
  *
  * Reoriented 2026-06-22: was direct-pin (cloned from xiphos); now a ~5x4 matrix
