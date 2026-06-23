@@ -1,14 +1,14 @@
 // Copyright (c) 2026 Hunter Cook (jusdisgi)
 // SPDX-License-Identifier: MIT
 //
-// stactyl default keymap. Carried over from xiphos (same 36-key direct-pin
-// layout), which itself ports the alpha layout + layer scheme from
-// zmk-config-sweep-pro. The two outboard pinky keys are dedicated SHIFTs on the
-// base layer (transparent elsewhere). Trackpad / encoder / pointing behaviors
-// from sweep-pro are intentionally dropped — stactyl has none.
+// stactyl default keymap. Ports the alpha layout + layer scheme from
+// zmk-config-sweep-pro (via xiphos). The two outboard pinky keys are dedicated
+// SHIFTs on the base layer (transparent elsewhere). Trackpad / encoder /
+// pointing behaviors from sweep-pro are intentionally dropped — stactyl has none.
 //
-// Physical layout differs from xiphos (3D dactyl keywell, not a flat splay) but
-// the logical key-position numbering below is identical, so the keymap ports 1:1.
+// Wiring is a ~5x4 MATRIX (XIAO nRF52840 Plus per half) as of the 2026-06-22
+// reorientation, but the logical key-position numbering below is UNCHANGED from
+// the earlier direct-pin version, so the keymap ports 1:1 (see stactyl.dtsi).
 // The 2-key thumb cluster position/angle is still a hardware TODO; if it changes,
 // the thumb bindings here may want revisiting.
 //

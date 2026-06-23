@@ -3,7 +3,7 @@ id: stactyl
 name: stactyl
 type: shield
 url: https://github.com/jusdisgi/stactyl
-requires: [pro_micro]
+requires: [xiao_ble]
 features:
   - keys
 siblings:

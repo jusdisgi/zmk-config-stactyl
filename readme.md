@@ -1,26 +1,30 @@
 # zmk-config-stactyl
 
 ZMK firmware + bundled shield for **stactyl** (the stowable 3D-keywell split in `../stactyl`).
-36 keys, **direct-pin** wiring, **nice!nano** per half. Left = split central.
+36 keys, **matrix** wiring, **XIAO nRF52840 Plus** per half. Left = split central.
 
-Cloned from `../zmk-config-xiphos` because stactyl is electrically identical: 18 keys/half
-(3×5 finger well + 1 outboard pinky + 2 thumbs), each switch on its own GPIO to GND
-(`zmk,kscan-gpio-direct`), no diodes, no matrix. The only physical difference — a true 3D dactyl
-keywell instead of xiphos's flat splay — doesn't change the logical 36-key transform, so the
-keymap and transform port 1:1.
+> **Retarget done (reorientation 2026-06-22).** stactyl flipped to **XIAO Plus + matrix + diodes**,
+> turnkey at Seeed. The shield was converted from the old xiphos direct-pin clone to a
+> `zmk,kscan-gpio-matrix` shield on `xiao_ble//zmk`, modeled on `../zmk-config-totem` (XIAO split):
+> `&xiao_d` GPIOs, `diode-direction = "col2row"`, a 10×4 transform. The 36-key transform and keymap
+> are unchanged and port 1:1.
 
-> **Heads up — placeholder pins.** stactyl's PCB isn't routed yet, so the `&pro_micro` pin numbers
-> in the overlays are inherited from xiphos and are *tentative*. Once the board is routed,
-> re-derive them from the `Pn:` assignments in `../stactyl/config.yaml` and update both overlays.
-> The key-position order and direct-pin structure are correct as-is.
+stactyl is 18 keys/half (3×5 finger well + 1 outboard pinky + 2 thumbs). The only physical difference
+from a flat board — a true 3D dactyl keywell — doesn't change the logical 36-key transform.
+
+> **Heads up — placeholder pins.** stactyl's PCB isn't routed yet, so the `&xiao_d` row/col pins (and
+> the row-3 matrix cells for the outboard pinky + thumbs) are *tentative*. Once the board is routed,
+> re-derive them from the XIAO Plus footprint `Pn:` assignments in `../stactyl/config.yaml`, update
+> both overlays + the R3 transform map, and confirm `diode-direction` matches the placed diodes.
 
 ## Build & flash
 
 GitHub Actions builds on push (`.github/workflows/build.yml` → ZMK's `build-user-config.yml`).
-Artifacts: `stactyl_left`, `stactyl_right`, `settings_reset` (all `nice_nano//zmk`).
+Artifacts: `stactyl_left`, `stactyl_right`, `settings_reset`.
 
-Board target is **`nice_nano//zmk`** (Zephyr hardware-model-v2), not `nice_nano_v2`. `west.yml`
-pins the same ZMK revision as xiphos / totem.
+Board target is **`xiao_ble//zmk`** (Zephyr hardware-model-v2) — the XIAO nRF52840 Plus builds on the
+`xiao_ble` target. `west.yml` pins ZMK rev `773dec58…` (same as `../zmk-config-totem`, which builds
+`xiao_ble//zmk`).
 
 Flash: double-tap reset on a half → drag the matching `.uf2` on. Use `settings_reset` to wipe
 Bluetooth bonds when re-pairing halves.

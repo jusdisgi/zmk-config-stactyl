@@ -1,11 +1,13 @@
 # What GitHub Actions builds. Each entry produces one .uf2 in the artifacts zip.
-# Board target uses Zephyr hardware-model-v2 naming: `nice_nano//zmk`
-# (the post-migration ZMK no longer has a board named `nice_nano_v2`).
+# Board target uses Zephyr hardware-model-v2 naming: `xiao_ble//zmk`.
+# stactyl reoriented to the Seeed XIAO nRF52840 Plus (2026-06-22); the Plus
+# builds on the `xiao_ble` target. NOT `nice_nano` anymore, and never a `_v2`
+# suffix. Modeled on ../zmk-config-totem (XIAO split).
 include:
-  - board: nice_nano//zmk
+  - board: xiao_ble//zmk
     shield: stactyl_left
-  - board: nice_nano//zmk
+  - board: xiao_ble//zmk
     shield: stactyl_right
   # Flash this to a half to wipe stored Bluetooth bonds when re-pairing halves.
-  - board: nice_nano//zmk
+  - board: xiao_ble//zmk
     shield: settings_reset
